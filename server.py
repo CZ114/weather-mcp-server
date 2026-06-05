@@ -2,8 +2,29 @@ import json
 import requests
 import os
 from datetime import datetime
-from typing import Dict, Any
-from hello_agents.protocols import MCPServer
+from typing import Any, Callable, Dict, Optional
+from fastmcp import FastMCP
+
+
+# Inlined from hello_agents.protocols.mcp.MCPServer (0.2.9) — the framework's
+# top-level package imports many heavy optional submodules at startup, which
+# made the Smithery container fail to boot. This thin wrapper keeps the same
+# API (add_tool / run) without dragging the whole framework in.
+class MCPServer:
+    def __init__(self, name: str, description: Optional[str] = None):
+        self.mcp = FastMCP(name=name)
+        self.name = name
+        self.description = description or f"{name} MCP Server"
+
+    def add_tool(self, func: Callable, name: Optional[str] = None, description: Optional[str] = None):
+        if name or description:
+            self.mcp.tool(name=name, description=description)(func)
+        else:
+            self.mcp.tool()(func)
+
+    def run(self, transport: str = "stdio", **kwargs):
+        self.mcp.run(transport=transport, **kwargs)
+
 
 weather_server = MCPServer(name="weather_server", description="真实天气查询服务")
 
