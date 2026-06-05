@@ -65,4 +65,15 @@ weather_server.add_tool(list_supported_cities)
 weather_server.add_tool(get_server_info)
 
 if __name__ == '__main__':
-    weather_server.run()
+    # Smithery requires HTTP transport on PORT environment variable
+    port = int(os.getenv("PORT", 8081))
+    host = os.getenv("HOST", "0.0.0.0")
+
+    print(f"🌤️  Starting Weather MCP Server...")
+    print(f"📡 Transport: HTTP")
+    print(f"🌐 Host: {host}")
+    print(f"🔌 Port: {port}")
+    print(f"🔗 Endpoint: http://{host}:{port}/mcp")
+    print(f"✨ Ready to serve weather data!")
+
+    weather_server.run(transport="http", host=host, port=port)
