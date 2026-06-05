@@ -1,34 +1,34 @@
 # Weather MCP Server
 
-真实天气查询 MCP 服务器，基于 HelloAgents 框架开发。
+A real-time weather query MCP server built on the HelloAgents framework.
 
-## 功能特性
+## Features
 
-- 🌤️ 实时天气查询
-- 🌍 支持 13 个中国主要城市（含长沙），其他城市可用英文名直查 wttr.in
-- 🔄 使用 wttr.in API（无需密钥）
-- 🚀 基于 HelloAgents 框架
-- 🐳 提供 Dockerfile，可直接部署到 Smithery
+- 🌤️ Real-time weather queries
+- 🌍 Built-in mapping for 13 major Chinese cities (Changsha included); any other city name is forwarded to wttr.in as-is, so most cities worldwide work via English names
+- 🔄 Powered by the wttr.in API (no API key required)
+- 🚀 Built on the HelloAgents framework
+- 🐳 Ships with a Dockerfile, ready to deploy on Smithery
 
-## 安装
+## Installation
 
 ```bash
 pip install hello-agents requests
 ```
 
-## 使用方法
+## Usage
 
-### 直接运行
+### Run locally
 
 ```bash
 python server.py
 ```
 
-服务默认在 `0.0.0.0:8081` 上以 HTTP transport 启动，可通过环境变量 `PORT` / `HOST` 覆盖，MCP 端点为 `http://<host>:<port>/mcp`。
+The server starts on `0.0.0.0:8081` over HTTP transport by default. Override with the `PORT` / `HOST` environment variables. The MCP endpoint is `http://<host>:<port>/mcp`.
 
-### 在 Claude Desktop 中使用
+### Use in Claude Desktop
 
-编辑 `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) 或 `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
+Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
 
 ```json
 {
@@ -41,36 +41,36 @@ python server.py
 }
 ```
 
-### 在 HelloAgents 中使用
+### Use in HelloAgents
 
 ```python
 from hello_agents import SimpleAgent, HelloAgentsLLM
 from hello_agents.tools import MCPTool
 
-agent = SimpleAgent(name="天气助手", llm=HelloAgentsLLM())
+agent = SimpleAgent(name="WeatherAssistant", llm=HelloAgentsLLM())
 weather_tool = MCPTool(server_command=["python", "server.py"])
 agent.add_tool(weather_tool)
 
-response = agent.run("北京今天天气怎么样？")
+response = agent.run("What's the weather in Beijing today?")
 ```
 
-## API 工具
+## API Tools
 
 ### get_weather
 
-获取指定城市的当前天气。
+Get the current weather for a given city.
 
-**参数：**
-- `city` (string): 城市名称（支持中文和英文）
+**Parameters:**
+- `city` (string): City name (Chinese or English)
 
-**示例：**
+**Example:**
 ```json
 {
   "city": "北京"
 }
 ```
 
-**返回：**
+**Returns:**
 ```json
 {
   "city": "北京",
@@ -86,9 +86,9 @@ response = agent.run("北京今天天气怎么样？")
 
 ### list_supported_cities
 
-列出所有支持的中文城市。
+List every Chinese city name the server has a built-in mapping for.
 
-**返回：**
+**Returns:**
 ```json
 {
   "cities": ["北京", "上海", "广州", "深圳", "杭州", "成都", "重庆", "武汉", "西安", "南京", "天津", "苏州", "长沙"],
@@ -98,9 +98,9 @@ response = agent.run("北京今天天气怎么样？")
 
 ### get_server_info
 
-获取服务器信息。
+Return server metadata.
 
-**返回：**
+**Returns:**
 ```json
 {
   "name": "Weather MCP Server",
@@ -109,24 +109,24 @@ response = agent.run("北京今天天气怎么样？")
 }
 ```
 
-## 支持的城市
+## Supported cities
 
-北京、上海、广州、深圳、杭州、成都、重庆、武汉、西安、南京、天津、苏州、长沙
+Beijing, Shanghai, Guangzhou, Shenzhen, Hangzhou, Chengdu, Chongqing, Wuhan, Xi'an, Nanjing, Tianjin, Suzhou, Changsha.
 
-也支持使用英文城市名查询全球任意城市。
+Any other city name is passed straight through to wttr.in, so most major cities worldwide work using their English name.
 
-## 部署到 Smithery
+## Deploy on Smithery
 
-仓库根目录已包含 `smithery.yaml` 与 `Dockerfile`，可直接在 [Smithery](https://smithery.ai/) 上以 "Publish Server" 方式提交本仓库 URL：
+The repo root already contains `smithery.yaml` and `Dockerfile`. Submit the repo URL on [Smithery](https://smithery.ai/) via "Publish Server":
 
 ```
 https://github.com/CZ114/weather-mcp-server
 ```
 
-## 许可证
+## License
 
 MIT License
 
-## 作者
+## Author
 
 ZheC
