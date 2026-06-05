@@ -1,3 +1,13 @@
+---
+title: Weather MCP Server
+emoji: 🌤️
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 8081
+pinned: false
+---
+
 # Weather MCP Server
 
 A real-time weather query MCP server built on the HelloAgents framework.
